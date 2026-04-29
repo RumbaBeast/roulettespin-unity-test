@@ -2,6 +2,7 @@
 <!Doctype html>
   <html class="" lang="en">
   <head>
+    <script src="mraid.js"></script>
     <script type="text/javascript">
       window.apiName = "unity";
       window.playableEnv = {
@@ -1940,6 +1941,9 @@ body {
   window.playableFinished = function() {
     window.gameEnd && window.gameEnd();
   };
+
+  window.addEventListener("resize", function() {});
+  window.addEventListener("orientationchange", function() {});
 
   function startWhenMraidViewable(callback) {
     var started = false;
