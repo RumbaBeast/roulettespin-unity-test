@@ -1055,20 +1055,23 @@
         callback();
       }
 
-      function waitForViewable() {
-        if (typeof mraid === "undefined") {
-          startOnce();
-          return;
+      function handleResize() {
+        if (typeof updatePopupScale === 'function') {
+          updatePopupScale();
         }
+      }
 
+      function handleViewableChange(isViewable) {
+        if (isViewable) startOnce();
+      }
+
+      function waitForViewable() {
         try {
-          if (mraid.addEventListener) {
-            mraid.addEventListener("viewableChange", function(isViewable) {
-              if (isViewable) startOnce();
-            });
-          }
+          mraid.addEventListener('viewableChange', handleViewableChange);
+          window.addEventListener('resize', handleResize);
+          window.addEventListener('orientationchange', handleResize);
 
-          if ((mraid.isViewable && mraid.isViewable()) || (mraid.getViewable && mraid.getViewable())) {
+          if (mraid.isViewable()) {
             startOnce();
           }
         } catch (e) {
@@ -1082,8 +1085,8 @@
       }
 
       try {
-        if (mraid.getState && mraid.getState() === "loading" && mraid.addEventListener) {
-          mraid.addEventListener("ready", waitForViewable);
+        if (mraid.getState() === 'loading') {
+          mraid.addEventListener('ready', waitForViewable);
         } else {
           waitForViewable();
         }
