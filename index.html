@@ -1010,16 +1010,19 @@
   <script type="text/javascript">
     // ===== UNITY PLAYABLE INITIALIZATION =====
     window.onload = function() {
-      if (typeof superApp !== "undefined") {
-        superApp.init({
-          after: function() {
-            initializePlayable();
-            window.gameReady && window.gameReady();
-          }
-        });
-      } else {
-        initializePlayable();
-      }
+      startWhenMraidViewable(function() {
+        if (typeof superApp !== "undefined") {
+          superApp.init({
+            after: function() {
+              initializePlayable();
+              window.gameReady && window.gameReady();
+            }
+          });
+        } else {
+          initializePlayable();
+          window.gameReady && window.gameReady();
+        }
+      });
 
       window.clickInstall = function() {
         if (window.__storeOpened) return;
@@ -1035,29 +1038,67 @@
           mraid.open(storeUrl);
         } else if (window.install) {
           window.install();
-        } else {
-          window.open(storeUrl, "_blank");
         }
       };
 
       window.playableFinished = function() {
-        console.log("Игра завершена");
         window.gameEnd && window.gameEnd();
       };
     };
 
+    function startWhenMraidViewable(callback) {
+      var started = false;
+
+      function startOnce() {
+        if (started) return;
+        started = true;
+        callback();
+      }
+
+      function waitForViewable() {
+        if (typeof mraid === "undefined") {
+          startOnce();
+          return;
+        }
+
+        try {
+          if (mraid.addEventListener) {
+            mraid.addEventListener("viewableChange", function(isViewable) {
+              if (isViewable) startOnce();
+            });
+          }
+
+          if ((mraid.isViewable && mraid.isViewable()) || (mraid.getViewable && mraid.getViewable())) {
+            startOnce();
+          }
+        } catch (e) {
+          startOnce();
+        }
+      }
+
+      if (typeof mraid === "undefined") {
+        startOnce();
+        return;
+      }
+
+      try {
+        if (mraid.getState && mraid.getState() === "loading" && mraid.addEventListener) {
+          mraid.addEventListener("ready", waitForViewable);
+        } else {
+          waitForViewable();
+        }
+      } catch (e) {
+        startOnce();
+      }
+    }
+
     function initializePlayable() {
-      console.log("Инициализация плейбла");
       setLanguage(getBrowserLanguage());
     }
 
-    window.gameStart = function() {
-      console.log("Игра началась");
-    };
+    window.gameStart = function() {};
 
-    window.gameClose = function() {
-      console.log("Игра закрыта");
-    };
+    window.gameClose = function() {};
 
     // ===== TRANSLATION SYSTEM =====
     const translations = {
