@@ -11,8 +11,8 @@
     window.playableEnv = {
       lang: "en",
       apiName: "unity",
-      titleKey: "roulette_spin",
-      titleName: "roulette_spin"
+      titleKey: "roulettespin_black",
+      titleName: "roulettespin_black"
     };
   </script>
 
@@ -1009,42 +1009,38 @@
 
   <script type="text/javascript">
     // ===== UNITY PLAYABLE INITIALIZATION =====
-    window.onload = function() {
+    (window.onload = function() {
       startWhenMraidViewable(function() {
-        if (typeof superApp !== "undefined") {
-          superApp.init({
-            after: function() {
-              initializePlayable();
-              window.gameReady && window.gameReady();
-            }
-          });
-        } else {
-          initializePlayable();
-          window.gameReady && window.gameReady();
-        }
-      });
+        "undefined" != typeof superApp
+          ? superApp.init({
+              after: function() {
+                initializePlayable();
+                window.gameReady && window.gameReady();
+              }
+            })
+          : (initializePlayable(), window.gameReady && window.gameReady());
+      }),
+        (window.clickInstall = function() {
+          if (window.__storeOpened) return;
+          window.__storeOpened = true;
 
-      window.clickInstall = function() {
-        if (window.__storeOpened) return;
-        window.__storeOpened = true;
+          var userAgent = navigator.userAgent || navigator.vendor || window.opera || "";
+          var storeUrl = /android/i.test(userAgent)
+            ? "https://play.google.com/store/apps/details?id=academy.gocrypto.trading"
+            : "https://apps.apple.com/app/id6751225067";
 
-        const userAgent = navigator.userAgent || navigator.vendor || window.opera || "";
-        const isAndroid = /android/i.test(userAgent);
-        const storeUrl = isAndroid
-          ? "https://play.google.com/store/apps/details?id=academy.gocrypto.trading"
-          : "https://apps.apple.com/app/id6751225067";
-
-        if (typeof mraid !== "undefined" && mraid.open) {
-          mraid.open(storeUrl);
-        } else if (window.install) {
-          window.install();
-        }
-      };
-
-      window.playableFinished = function() {
-        window.gameEnd && window.gameEnd();
-      };
-    };
+          if (typeof mraid !== "undefined" && mraid.open) {
+            mraid.open(storeUrl);
+          } else {
+            window.install && window.install();
+          }
+        }),
+        (window.playableFinished = function() {
+          window.gameEnd && window.gameEnd();
+        });
+    }),
+      (window.gameStart = function() {}),
+      (window.gameClose = function() {});
 
     function startWhenMraidViewable(callback) {
       var started = false;
@@ -1098,10 +1094,6 @@
     function initializePlayable() {
       setLanguage(getBrowserLanguage());
     }
-
-    window.gameStart = function() {};
-
-    window.gameClose = function() {};
 
     // ===== TRANSLATION SYSTEM =====
     const translations = {
