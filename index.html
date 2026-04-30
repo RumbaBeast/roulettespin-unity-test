@@ -1,6 +1,5 @@
-
-  <!Doctype html>
-  <html class="" lang="en">
+﻿<!DOCTYPE html>
+<html lang="en">
   <head>
   <meta charset="utf-8" />
   <title>Roulette Spin - Unity Playable</title>
@@ -17,8 +16,10 @@
     };
   </script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  // Обработчик кликов для кнопок в модальном окне
+function initializeLandingEvents() {
+  if (window.__landingEventsInitialized) return;
+  window.__landingEventsInitialized = true;
+// Обработчик кликов для кнопок в модальном окне
   document.addEventListener('click', (event) => {
     const activeModal = document.querySelector('.alert.dur_anim.ballvbIn.show');
     if (activeModal) {
@@ -31,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
   document.getElementById('button3').addEventListener('customClick', function() {
     this.click();
   });
-});
+}
 
 function nextpopup01() {
   document.getElementById('popup01').classList.remove('show');
@@ -108,7 +109,8 @@ function nextpopup021() {
     }, 500);
   }, 8000);
 }
-      document.addEventListener("DOMContentLoaded", () => {
+
+function updateStoreLabel() {
   const osTypeElement = document.getElementById("typeOS");
   if (!osTypeElement) return;
 
@@ -121,8 +123,7 @@ function nextpopup021() {
   } else {
     osTypeElement.textContent = "App Store";
   }
-});
-</script><script>
+}</script><script>
 const translations = {
   en: {
     txt1: "LIVE DRAW ACTIVE",
@@ -892,7 +893,9 @@ function getBrowserLanguage() {
 function setLanguage(lang) {
   document.querySelectorAll('[data-translate]').forEach(element => {
     const key = element.dataset.translate;
-    element.innerHTML = translations[lang]?.[key] || translations['en'][key] || key;
+    const langTranslations = translations[lang] || {};
+    const fallbackTranslations = translations['en'] || {};
+    element.innerHTML = langTranslations[key] || fallbackTranslations[key] || key;
     // Если ключ отсутствует даже в английском варианте, оставляем ключ как текст
   });
   
@@ -901,8 +904,10 @@ function setLanguage(lang) {
 }
 
 // Инициализация перевода при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => setLanguage(getBrowserLanguage()));
-</script><title>Congratulations!</title><link rel="icon" href="data:image/x-icon;base64,PASTE_FAVICON_BASE64_HERE" type="image/x-icon">
+function initializeLanguage() {
+  setLanguage(getBrowserLanguage());
+}
+</script><link rel="icon" href="data:image/x-icon;base64,PASTE_FAVICON_BASE64_HERE" type="image/x-icon">
   </head>
     <body class="" dir="auto">
 
@@ -931,15 +936,14 @@ document.addEventListener('DOMContentLoaded', () => setLanguage(getBrowserLangua
       rgba(239, 68, 68, 0.42) 0%,
       rgba(239, 68, 68, 0.22) 38%,
       rgba(143, 179, 255, 0.08) 62%,
-      rgba(239, 68, 68, 0.00) 100%);}#button1::before{content:"";position:absolute;inset:-2px;border-radius:12px;undefined:undefined;z-index:-1;opacity:.28;pointer-events:none;background:radial-gradient(120% 120% at 50% 120%,
+      rgba(239, 68, 68, 0.00) 100%);}#button1::before{content:"";position:absolute;inset:-2px;border-radius:12px;z-index:-1;opacity:.28;pointer-events:none;background:radial-gradient(120% 120% at 50% 120%,
       rgba(255, 255, 255, 0.10) 0%,
       rgba(255, 255, 255, 0.06) 28%,
-      rgba(255, 255, 255, 0.00) 60%);filter:blur(6px);animation:btnHaloBreath 2.4s ease-in-out infinite;}#button11::before{content:"";position:absolute;inset:-2px;border-radius:12px;undefined:undefined;z-index:-1;opacity:.28;pointer-events:none;background:radial-gradient(120% 120% at 50% 120%,
+      rgba(255, 255, 255, 0.00) 60%);filter:blur(6px);animation:btnHaloBreath 2.4s ease-in-out infinite;}#button11::before{content:"";position:absolute;inset:-2px;border-radius:12px;z-index:-1;opacity:.28;pointer-events:none;background:radial-gradient(120% 120% at 50% 120%,
       rgba(255, 255, 255, 0.10) 0%,
       rgba(255, 255, 255, 0.06) 28%,
       rgba(255, 255, 255, 0.00) 60%);filter:blur(6px);animation:btnHaloBreath 2.4s ease-in-out infinite;}#button1:hover{transform:translateY(-1px);}#button11:hover{transform:translateY(-1px);}#button1:active{transform:translateY(0);}#button11:active{transform:translateY(0);}@keyframes pulse-live{0%, 100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(1.3);}}@keyframes activity-move{0%{width:20%;transform:translateX(-20px);}50%{width:80%;}100%{width:20%;transform:translateX(calc(100vw + 20px));}}@keyframes timer-pulse{0%, 100%{opacity:1;}50%{opacity:0.7;}}@keyframes toato{0%{transform:scale(1);}50%{transform:scale(1.1);}100%{transform:scale(1);}}@keyframes btnGlowBreath{0%{transform:translateX(-50%) scale(.90);opacity:.30;filter:blur(9px);}50%{transform:translateX(-50%) scale(1.18);opacity:.72;filter:blur(16px);}100%{transform:translateX(-50%) scale(.90);opacity:.30;filter:blur(9px);}}@keyframes btnHaloBreath{0%{opacity:.12;transform:scale(1.00);filter:blur(6px);}50%{opacity:.32;transform:scale(1.03);filter:blur(9px);}100%{opacity:.12;transform:scale(1.00);filter:blur(6px);}}@media (prefers-reduced-motion: reduce){#button1::before{animation:none;opacity:.35;filter:blur(10px);}#button1::after{animation:none;opacity:.35;filter:blur(10px);}#button11::before{animation:none;opacity:.35;filter:blur(10px);}#button11::after{animation:none;opacity:.35;filter:blur(10px);}}@media all and (max-width: 540px){.popup-live{width:94vw;}}
-      </style>
-      <title id="if7d" data-gjs-type="text" data-translate="grats">Congratulations! </title><style id="ir3i">
+      </style><style id="ir3i">
 body.stop-scrolling {
 	height: 100%;
 	overflow: hidden; }
@@ -2208,7 +2212,12 @@ body {
   }
 
   function initializePlayable() {
-    setLanguage(getBrowserLanguage());
+    if (typeof initializeLanguage === 'function') initializeLanguage();
+    if (typeof initializeLandingEvents === 'function') initializeLandingEvents();
+    if (typeof updateStoreLabel === 'function') updateStoreLabel();
+    if (typeof updatePopupScale === 'function') {
+      updatePopupScale();
+    }
   }
 </script><style id="popup-responsive-adapter">
   .overlay,
@@ -2435,3 +2444,4 @@ body {
 </style></body>
   </html>
   
+
