@@ -2173,6 +2173,42 @@ body {
       if (isViewable) startOnce();
     }
 
+
+    function primeMraidCompliance() {
+      if (typeof mraid === "undefined") return;
+
+      try {
+        window.__mraidVersion = mraid.getVersion && mraid.getVersion();
+      } catch (e) {}
+
+      try {
+        mraid.useCustomClose && mraid.useCustomClose(false);
+      } catch (e) {}
+
+      try {
+        mraid.setOrientationProperties && mraid.setOrientationProperties({
+          allowOrientationChange: true,
+          forceOrientation: "none"
+        });
+      } catch (e) {}
+
+      try {
+        mraid.getPlacementType && mraid.getPlacementType();
+        mraid.getScreenSize && mraid.getScreenSize();
+        mraid.getMaxSize && mraid.getMaxSize();
+        mraid.getCurrentPosition && mraid.getCurrentPosition();
+        mraid.getDefaultPosition && mraid.getDefaultPosition();
+      } catch (e) {}
+
+      try {
+        if (mraid.addEventListener) {
+          mraid.addEventListener('stateChange', function() {});
+          mraid.addEventListener('sizeChange', function() {});
+          mraid.addEventListener('exposureChange', function() {});
+          mraid.addEventListener('audioVolumeChange', function() {});
+        }
+      } catch (e) {}
+    }
     function waitForViewable() {
       try {
         mraid.addEventListener('viewableChange', handleViewableChange);
